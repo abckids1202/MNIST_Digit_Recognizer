@@ -35,6 +35,8 @@ h2 { margin: 0; font-size: 20px; font-weight: 650; }
 .canvas-guide { position: absolute; pointer-events: none; right: 14px; bottom: 10px; color: #6d6b68; font: 11px/1 ui-monospace, monospace; }
 .canvas-actions { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
 .brush-control { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 12px; white-space: nowrap; }
+.live-status { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 12px; }
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
 input[type="range"] { accent-color: var(--accent); width: 100px; }
 .primary-button { border: 0; border-radius: 4px; background: var(--accent); color: white; padding: 13px 17px; font-weight: 700; cursor: pointer; }
 .primary-button:hover { background: var(--accent-dark); }

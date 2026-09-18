@@ -111,7 +111,7 @@ After training, start the local web app:
 python app.py
 ```
 
-Open `http://127.0.0.1:5000` in a browser. Draw one digit on the canvas and click `Recognize digit`.
+Open `http://127.0.0.1:5000` in a browser. Draw one digit on the canvas; prediction updates automatically after you pause drawing.
 
 The web app uses the same preprocessing as command-line inference: it converts the drawing to grayscale, crops the non-empty pixels, centers the digit in a `28 x 28` image, and normalizes it with MNIST's mean and standard deviation.
 

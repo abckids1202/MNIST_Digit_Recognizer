@@ -1,7 +1,6 @@
 const canvas = document.querySelector('#digit-canvas');
 const context = canvas.getContext('2d');
 const clearButton = document.querySelector('#clear-button');
-const recognizeButton = document.querySelector('#recognize-button');
 const brushSize = document.querySelector('#brush-size');
 const resultEmpty = document.querySelector('#result-empty');
 const resultContent = document.querySelector('#result-content');
@@ -17,6 +16,9 @@ context.lineCap = 'round';
 context.lineJoin = 'round';
 
 let drawing = false;
+let hasDrawing = false;
+let predictionTimer = null;
+let latestRequest = 0;
 
 function pointFromEvent(event) {
   const bounds = canvas.getBoundingClientRect();
@@ -36,6 +38,8 @@ canvas.addEventListener('pointerdown', (event) => {
   context.strokeStyle = '#ffffff';
   context.lineWidth = Number(brushSize.value);
   context.stroke();
+  hasDrawing = true;
+  schedulePrediction();
 });
 
 canvas.addEventListener('pointermove', (event) => {
@@ -44,15 +48,28 @@ canvas.addEventListener('pointermove', (event) => {
   context.lineWidth = Number(brushSize.value);
   context.lineTo(point.x, point.y);
   context.stroke();
+  schedulePrediction();
 });
 
-function stopDrawing() { drawing = false; }
+function stopDrawing() {
+  drawing = false;
+  schedulePrediction();
+}
 canvas.addEventListener('pointerup', stopDrawing);
 canvas.addEventListener('pointercancel', stopDrawing);
+
+function schedulePrediction() {
+  if (!hasDrawing) return;
+  window.clearTimeout(predictionTimer);
+  predictionTimer = window.setTimeout(runPrediction, 250);
+}
 
 function clearCanvas() {
   context.fillStyle = '#171717';
   context.fillRect(0, 0, canvas.width, canvas.height);
+  hasDrawing = false;
+  latestRequest += 1;
+  window.clearTimeout(predictionTimer);
   resultEmpty.classList.remove('hidden');
   resultContent.classList.add('hidden');
   resultError.classList.add('hidden');
@@ -60,9 +77,8 @@ function clearCanvas() {
 
 clearButton.addEventListener('click', clearCanvas);
 
-recognizeButton.addEventListener('click', async () => {
-  recognizeButton.disabled = true;
-  recognizeButton.innerHTML = 'Reading…';
+async function runPrediction() {
+  const requestId = ++latestRequest;
   resultError.classList.add('hidden');
   try {
     const response = await fetch('/predict', {
@@ -72,6 +88,7 @@ recognizeButton.addEventListener('click', async () => {
     });
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || 'Prediction failed.');
+    if (requestId !== latestRequest) return;
 
     resultEmpty.classList.add('hidden');
     resultContent.classList.remove('hidden');
@@ -83,10 +100,8 @@ recognizeButton.addEventListener('click', async () => {
       `<div class="probability-item"><strong>${(value * 100).toFixed(0)}%</strong>${digit}</div>`
     ).join('');
   } catch (error) {
+    if (requestId !== latestRequest) return;
     resultError.textContent = error.message;
     resultError.classList.remove('hidden');
-  } finally {
-    recognizeButton.disabled = false;
-    recognizeButton.innerHTML = 'Recognize digit <span>→</span>';
   }
-});
+}
