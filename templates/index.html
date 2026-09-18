@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MNIST Digit Recognizer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="intro">
+      <p class="eyebrow">MNIST / CNN INFERENCE</p>
+      <h1>Write a digit.<br><span>Let the model read it.</span></h1>
+      <p class="lede">Draw one centered digit on the canvas. The trained convolutional neural network will return its best guess and confidence.</p>
+      <div class="status-row">
+        <span class="status-dot {{ 'ready' if model_ready else 'offline' }}"></span>
+        <span>{{ 'Model ready' if model_ready else 'Model unavailable' }}</span>
+        <span class="status-separator">·</span>
+        <span>{{ device }}</span>
+      </div>
+      {% if model_error %}
+      <p class="error-note">{{ model_error }}</p>
+      {% endif %}
+    </section>
+
+    <section class="workspace" aria-label="Digit drawing workspace">
+      <div class="canvas-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="panel-kicker">YOUR DRAWING</p>
+            <h2>One digit at a time</h2>
+          </div>
+          <button id="clear-button" class="icon-button" type="button" aria-label="Clear drawing" title="Clear drawing">↺</button>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="digit-canvas" width="280" height="280" aria-label="Draw a handwritten digit here"></canvas>
+          <div class="canvas-guide">draw here</div>
+        </div>
+        <div class="canvas-actions">
+          <label class="brush-control" for="brush-size">Brush <input id="brush-size" type="range" min="8" max="28" value="18"></label>
+          <button id="recognize-button" class="primary-button" type="button">Recognize digit <span>→</span></button>
+        </div>
+      </div>
+
+      <div class="result-panel" aria-live="polite">
+        <p class="panel-kicker">MODEL OUTPUT</p>
+        <div id="result-empty" class="result-empty">
+          <div class="result-symbol">?</div>
+          <h2>Waiting for a drawing</h2>
+          <p>Your prediction will appear here.</p>
+        </div>
+        <div id="result-content" class="result-content hidden">
+          <p class="result-label">I think this is</p>
+          <div id="prediction-digit" class="prediction-digit">–</div>
+          <div class="confidence-line"><span>Confidence</span><strong id="confidence-value">–</strong></div>
+          <div class="confidence-track"><div id="confidence-bar" class="confidence-bar"></div></div>
+          <div id="probability-list" class="probability-list"></div>
+        </div>
+        <p id="result-error" class="error-note hidden"></p>
+      </div>
+    </section>
+
+    <footer>Trained on 60,000 MNIST examples · 10 classes · 28 × 28 grayscale input</footer>
+  </main>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

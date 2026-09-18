@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mnist-digit-recognition"
+version = "0.1.0"
+description = "Simple PyTorch CNN for MNIST handwritten digit recognition."
+requires-python = ">=3.9"
+dependencies = [
+  "torch>=2.2",
+  "torchvision>=0.17",
+  "numpy<2",
+  "PyYAML>=6.0",
+  "Pillow>=10.0",
+  "Flask>=3.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

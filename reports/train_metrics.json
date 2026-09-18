@@ -1,0 +1,43 @@
+{
+  "device": "cpu",
+  "epochs": 5,
+  "best_val_accuracy": 0.9885,
+  "checkpoint": "models\\best_model.pt",
+  "history": [
+    {
+      "epoch": 1,
+      "train_loss": 0.1712589061583082,
+      "train_accuracy": 0.947037037037037,
+      "val_loss": 0.0607122350782156,
+      "val_accuracy": 0.9835
+    },
+    {
+      "epoch": 2,
+      "train_loss": 0.05496541132377806,
+      "train_accuracy": 0.9830740740740741,
+      "val_loss": 0.05057112020005782,
+      "val_accuracy": 0.9858333333333333
+    },
+    {
+      "epoch": 3,
+      "train_loss": 0.04320683927240747,
+      "train_accuracy": 0.9871296296296296,
+      "val_loss": 0.04930676678195596,
+      "val_accuracy": 0.9848333333333333
+    },
+    {
+      "epoch": 4,
+      "train_loss": 0.03318893653937374,
+      "train_accuracy": 0.9893703703703703,
+      "val_loss": 0.04169837534148246,
+      "val_accuracy": 0.9881666666666666
+    },
+    {
+      "epoch": 5,
+      "train_loss": 0.028194333986637905,
+      "train_accuracy": 0.9907222222222222,
+      "val_loss": 0.036453956983673076,
+      "val_accuracy": 0.9885
+    }
+  ]
+}

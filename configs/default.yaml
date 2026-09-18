@@ -1,0 +1,22 @@
+seed: 42
+
+data:
+  root_dir: data/raw
+  download: true
+  validation_fraction: 0.1
+  num_workers: 2
+
+training:
+  epochs: 5
+  batch_size: 64
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  device: auto
+
+model:
+  dropout: 0.25
+
+outputs:
+  model_dir: models
+  report_dir: reports
+  checkpoint_name: best_model.pt
